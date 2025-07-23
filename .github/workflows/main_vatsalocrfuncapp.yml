@@ -1,4 +1,4 @@
-name: Build and deploy Python project to Azure Function App - vatsalocrfuncapp
+name: Deploy Python OCR Function App - vatsalocrfuncapp
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'ocr_function'
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: '3.10'  # use your Function App runtime version
 
 jobs:
   build:
@@ -20,24 +20,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python version
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Zip function app contents
         run: |
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          zip -r ../../function.zip .
-        shell: bash
+          pip install -r requirements.txt
 
-      - name: Upload artifact for deployment job
+      - name: Package function app
+        run: |
+          cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          zip -r ../function.zip .
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: function-app
+          name: azure-function-package
           path: function.zip
 
   deploy:
@@ -48,20 +49,20 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download package
         uses: actions/download-artifact@v4
         with:
-          name: function-app
+          name: azure-function-package
 
-      - name: Unzip function app
+      - name: Unzip function package
         run: unzip function.zip -d functionapp
 
-      - name: Login to Azure
+      - name: Azure login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_1DD5A50E4B15437EB30B6A7DE1A86647 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_607939F4538349539919E28242AE53C9 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4AA2115E47584266A83A4F9A53BE7571 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_... }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_... }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_... }}
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
