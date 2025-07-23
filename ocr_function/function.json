@@ -1,0 +1,11 @@
+{
+  "bindings": [
+    {
+      "name": "blob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "input-images/{name}",
+      "connection": "AZURE_STORAGE_CONN_STRING"
+    }
+  ]
+}

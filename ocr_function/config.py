@@ -1,0 +1,12 @@
+import os
+
+AZURE_STORAGE_CONN_STRING = os.environ["AZURE_STORAGE_CONN_STRING"]
+VISION_ENDPOINT = os.environ["VISION_ENDPOINT"]
+VISION_KEY = os.environ["VISION_KEY"]
+
+INPUT_CONTAINER = "input-images"
+OUTPUT_CONTAINER = "output-jsons"
+
+SENDGRID_API_KEY = os.environ["SENDGRID_API_KEY"]
+FROM_EMAIL = os.environ["FROM_EMAIL"]
+TO_EMAIL = os.environ["TO_EMAIL"]
