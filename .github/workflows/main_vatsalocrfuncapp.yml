@@ -74,3 +74,12 @@ jobs:
           app-name: 'vatsalocrfuncapp'
           slot-name: 'Production'
           package: 'functionapp'
+
+      - name: Set AZURE_STORAGE_CONN_STRING application setting
+        run: |
+          az functionapp config appsettings set --name vatsalocrfuncapp --resource-group OCRResource --settings AZURE_STORAGE_CONN_STRING="${{ secrets.AZURE_STORAGE_CONN_STRING }}"
+        env:
+          AZURE_STORAGE_CONN_STRING: ${{ secrets.AZURE_STORAGE_CONN_STRING }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
