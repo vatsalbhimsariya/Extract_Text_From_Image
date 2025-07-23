@@ -57,7 +57,7 @@ jobs:
       - name: Unzip function package
         run: unzip function.zip -d functionapp
 
-      - name: Azure Login (Client Secret)
+      - name: Azure login (Client Secret)
         uses: azure/login@v2
         with:
           creds: |
