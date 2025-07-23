@@ -6,7 +6,7 @@ This repository sets up a private, automated OCR pipeline using Azure Functions 
 - Stores output JSON to "output-jsons"
 - Sends email alerts via SendGrid
 
-## 🛠 Components
+##  Components
 - Azure Function App (Python)
 - Azure Blob Storage
 - Azure AI Vision (Form Recognizer)
@@ -14,7 +14,7 @@ This repository sets up a private, automated OCR pipeline using Azure Functions 
 - VNet & Private Endpoint ready setup
 - ARM Template included
 
-## 🚀 Deployment
+##  Deployment
 
 ```bash
 az deployment group create \
