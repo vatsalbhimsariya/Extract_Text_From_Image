@@ -1,4 +1,4 @@
-# Azure OCR Automation Pipeline (Python)
+# Azure OCR Automation Pipeline
 
 This repository sets up a private, automated OCR pipeline using Azure Functions and Azure AI Vision. It:
 - Extracts handwritten/printed text from images
