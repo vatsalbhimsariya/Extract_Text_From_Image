@@ -1,4 +1,4 @@
-name: Deploy to Azure Function App - vatsalocrfuncapp
+name: Deploy Python OCR Function App - vatsalocrfuncapp
 
 on:
   push:
@@ -11,14 +11,16 @@ env:
   PYTHON_VERSION: '3.10'
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -28,10 +30,32 @@ jobs:
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           pip install -r requirements.txt
 
-      - name: Zip function app
+      - name: Package function app
         run: |
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           zip -r ../function.zip .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: azure-function-package
+          path: function.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download package
+        uses: actions/download-artifact@v4
+        with:
+          name: azure-function-package
+
+      - name: Unzip function package
+        run: unzip function.zip -d functionapp
 
       - name: Azure Login (Client Secret)
         uses: azure/login@v2
@@ -48,4 +72,5 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: 'vatsalocrfuncapp'
-          package: 'function.zip'
+          slot-name: 'Production'
+          package: 'functionapp'
