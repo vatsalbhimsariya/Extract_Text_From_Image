@@ -2,7 +2,8 @@ name: Deploy Python OCR Function App - vatsalocrfuncapp
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -16,9 +17,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -27,17 +30,16 @@ jobs:
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           pip install -r requirements.txt
 
-      - name: Package Function App
+      - name: Package function app
         run: |
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           zip -r ../function.zip .
 
-      - name: Upload deployment artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: azure-function-package
           path: function.zip
-          include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,12 +49,12 @@ jobs:
       contents: read
 
     steps:
-      - name: Download deployment package
+      - name: Download package
         uses: actions/download-artifact@v4
         with:
           name: azure-function-package
 
-      - name: Unzip package
+      - name: Unzip function package
         run: unzip function.zip -d functionapp
 
       - name: Azure login
@@ -60,7 +62,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          subscription-id: '6d372f9b-2072-4af3-bdbf-301cb376aa6d'
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
