@@ -1,4 +1,4 @@
-# Azure OCR Automation Pipeline
+# Azure OCR Automation Pipeline Using Azure And Blob
 
 This repository sets up a private, automated OCR pipeline using Azure Functions and Azure AI Vision. It:
 - Extracts handwritten/printed text from images
