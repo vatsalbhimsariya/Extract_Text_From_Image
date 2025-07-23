@@ -11,7 +11,7 @@
       "name": "outputBlob",
       "type": "blob",
       "direction": "out",
-      "path": "output-text/{name}.txt",
+      "path": "output-json/{name}.json",
       "connection": "AZURE_STORAGE_CONN_STRING"
     }
   ]
