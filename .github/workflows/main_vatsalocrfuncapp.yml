@@ -1,4 +1,4 @@
-name: Deploy Python OCR Function App - vatsalocrfuncapp
+name: Deploy to Azure Function App - vatsalocrfuncapp
 
 on:
   push:
@@ -11,16 +11,14 @@ env:
   PYTHON_VERSION: '3.10'
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -30,43 +28,24 @@ jobs:
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           pip install -r requirements.txt
 
-      - name: Package function app
+      - name: Zip function app
         run: |
           cd ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           zip -r ../function.zip .
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: azure-function-package
-          path: function.zip
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write
-      contents: read
-
-    steps:
-      - name: Download package
-        uses: actions/download-artifact@v4
-        with:
-          name: azure-function-package
-
-      - name: Unzip function package
-        run: unzip function.zip -d functionapp
-
-      - name: Azure login
+      - name: Azure Login (Client Secret)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          creds: |
+            {
+              "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+              "tenantId": "${{ secrets.AZURE_TENANT_ID }}",
+              "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+            }
 
       - name: Deploy to Azure Functions
         uses: Azure/functions-action@v1
         with:
           app-name: 'vatsalocrfuncapp'
-          slot-name: 'Production'
-          package: 'functionapp'
+          package: 'function.zip'
