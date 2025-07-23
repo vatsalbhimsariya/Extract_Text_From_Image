@@ -23,6 +23,6 @@ az deployment group create \
   --parameters functionAppName=myocrfunc storageAccountName=mystorageacct cognitiveAccountName=myvisionacct
 ```
 
-## 📂 Function Code
+## Function Code
 
-Deploy the `/ocr_function` folder as a zip to your Azure Function App.
+Deployed the `/ocr_function` folder to Azure Function App.
