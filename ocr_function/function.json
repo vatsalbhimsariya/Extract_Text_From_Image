@@ -1,10 +1,17 @@
 {
   "bindings": [
     {
-      "name": "blob",
+      "name": "input_blob",
       "type": "blobTrigger",
       "direction": "in",
       "path": "input-images/{name}",
+      "connection": "AZURE_STORAGE_CONN_STRING"
+    },
+    {
+      "name": "output_blob",
+      "type": "blob",
+      "direction": "out",
+      "path": "output-json/{name}.txt",
       "connection": "AZURE_STORAGE_CONN_STRING"
     }
   ]
