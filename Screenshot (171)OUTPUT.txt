@@ -1,0 +1,28 @@
+
+test [Running] - Oracle VirtualBox
+File Machine View Input Devices Help
+IsDxe: failed to load Boot0001 "UEFI VBOX HARDDISK VBd6518af5-81acf256" from PciRoot(0x0)/Pci (0xD,0x0) /S (0×0,0xFFFF,0x t Found
+IsDxe: No bootable option or device was found.
+Mouse integration ...
+IsDxe: Press any key to enter the Boot Manager Menu.
+9 40°C
+Haze
+VirtualBox - Error
+X Failed to open the disk image file C: \Users\Admin\Downloads\cybers hakti-virtualBox\test.iso.
+X
+CV"
+Details
+OK
+Copy
+Box
+Don't show again
+Auto capture keyboard...
+Don't show again
+Right Ctrl
+6
+ENG
+15:12
+Search
+IN
+20-05-2025
+X
